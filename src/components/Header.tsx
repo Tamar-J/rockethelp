@@ -34,6 +34,7 @@ export function Header({ title, ...props}: Props) {
         fontSize='lg'
         flex={1}
         ml={-6}
+        zIndex={-1}
       >
         {title}
       </Heading>
