@@ -17,10 +17,6 @@ export default function SignIn() {
   const navigation = useNavigation()
   const { colors } = useTheme()
 
-  const handleCreateAccount = () => {
-    navigation.navigate('signup')
-  }
-
   const handleSignIn = () => {
     if (!email || !password) {
       return Alert.alert('Entrar', 'Informe e-mail e senha')
@@ -53,6 +49,11 @@ export default function SignIn() {
     })
   }
 
+  const handleCreateAccount = () => {
+    navigation.navigate('signup')
+  }
+
+
   return (
     <VStack flex={1} alignItems='center' bg='gray.600' px={8} pt={24}>
       <Logo />
@@ -77,6 +78,7 @@ export default function SignIn() {
       <Button 
         title="Entrar" 
         w='full' 
+        mb={4}
         onPress={handleSignIn}
         isLoading={isLoading}
       />
