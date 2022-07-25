@@ -53,3 +53,7 @@ buck-out/
 .expo/
 web-build/
 dist/
+
+# Firebase
+google-services.json
+GoogleService-Info.plist
