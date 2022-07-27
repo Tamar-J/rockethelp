@@ -1,8 +1,9 @@
-import { VStack, Heading, Button, Text, HStack, Icon, Pressable, useTheme, KeyboardAvoidingView, ScrollView as Container } from 'native-base'
+import { VStack, Heading, Text, HStack, Icon, useTheme, KeyboardAvoidingView, ScrollView as Container } from 'native-base'
 import { Envelope, Eye, EyeClosed, Key } from 'phosphor-react-native';
 import { Platform } from 'react-native';
 
 import Logo from "../assets/logo_primary.svg";
+import { Button, TextButton } from '../components/Button';
 import { Input } from '../components/Input';
 
 export default function SignIn() {
@@ -26,7 +27,6 @@ export default function SignIn() {
             mb={4}
           />
 
-
           <Input 
             InputLeftElement={<Icon as={<Key color={colors.gray[300]}/>} ml={4} />}
             InputRightElement={
@@ -37,18 +37,7 @@ export default function SignIn() {
             mb={6}
           />
 
-          <Button 
-            w='full' 
-            h={14} 
-            bg='secondary.700' 
-            mb={4}
-            rounded={6}
-            _pressed={{
-              background: '#FFBC70'
-            }}
-          >
-            <Heading color='white' fontSize='sm'>Entrar</Heading>
-          </Button>
+          <Button title='Entrar' mb={4} />
 
           <HStack 
             w='full' 
@@ -56,13 +45,7 @@ export default function SignIn() {
             alignItems='center'
           >
             <Text color='gray.100' fontSize='sm'>Precisa de uma nova conta?</Text>
-            <Pressable>
-              {({isPressed}) => (
-                <Text color={isPressed ? '#5689E5' : 'primary.700' } fontSize='sm'>
-                  Criar uma Conta
-                </Text>
-              )}
-            </Pressable>
+            <TextButton title='Criar uma Conta'/>
           </HStack>
 
         </VStack>
