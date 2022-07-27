@@ -12,7 +12,7 @@ const [fontsLoaded] = useFonts({
 })
   return (
     <NativeBaseProvider theme={THEME}>
-      <SignIn />
+      {fontsLoaded ? <SignIn/> : <Loading/>}
     </NativeBaseProvider>
   )
 }
