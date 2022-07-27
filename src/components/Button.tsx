@@ -14,7 +14,7 @@ export function Button({ title, ...rest }: CustomButtonProps) {
       bg='secondary.700' 
       rounded={6}
       _pressed={{
-        background: '#FFBC70'
+        background: 'secondary.600'
       }}
       {...rest}
     >
@@ -27,7 +27,7 @@ export function TextButton({ title, ...rest }: Props) {
   return (
     <Pressable>
       {({isPressed}) => (
-        <Text color={isPressed ? '#5689E5' : 'primary.700' } fontSize='sm'>
+        <Text color={isPressed ? 'primary.600' : 'primary.700' } fontSize='sm'>
           {title}
         </Text>
       )}

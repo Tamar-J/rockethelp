@@ -14,7 +14,7 @@ export function Input({ ...rest }: IInputProps) {
       autoCapitalize='none'
       _focus={{
         borderWidth: 1,
-        borderColor: '#FFBC70'
+        borderColor: 'secondary.600'
       }}
       {...rest}
     />
