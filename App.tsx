@@ -3,7 +3,8 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 
 //import SignIn from './src/screens/SignIn'
 //import SignUp from './src/screens/SignUp'
-import { Home } from './src/screens/Home'
+//import { Home } from './src/screens/Home'
+import { Details } from './src/screens/Details'
 
 import { THEME } from './src/styles/theme'
 import { Loading } from './src/components/Loading'
@@ -15,7 +16,7 @@ const [fontsLoaded] = useFonts({
 })
   return (
     <NativeBaseProvider theme={THEME}>
-      {fontsLoaded ? <Home/> : <Loading/>}
+      {fontsLoaded ? <Details/> : <Loading/>}
     </NativeBaseProvider>
   )
 }
