@@ -1,10 +1,8 @@
 import { Heading, Text, Pressable, Button as NativeBaseButton, IButtonProps } from 'native-base';
 
-type Props = {
+type CustomButtonProps = IButtonProps & {
   title: string
 }
-
-type CustomButtonProps = IButtonProps & Props
 
 export function Button({ title, ...rest }: CustomButtonProps) {
   return (
@@ -23,9 +21,9 @@ export function Button({ title, ...rest }: CustomButtonProps) {
   );
 }
 
-export function TextButton({ title, ...rest }: Props) {
+export function TextButton({ title, ...rest }: CustomButtonProps) {
   return (
-    <Pressable>
+    <Pressable {...rest}>
       {({isPressed}) => (
         <Text color={isPressed ? 'primary.600' : 'primary.700' } fontSize='sm'>
           {title}
