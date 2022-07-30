@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler'
 import { NativeBaseProvider } from 'native-base'
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
 
@@ -5,7 +6,8 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 //import SignUp from './src/screens/SignUp'
 //import { Home } from './src/screens/Home'
 //import { Details } from './src/screens/Details'
-import { Register } from './src/screens/Register'
+//import { Register } from './src/screens/Register'
+import { Routes } from './src/routes'
 
 import { THEME } from './src/styles/theme'
 import { Loading } from './src/components/Loading'
@@ -17,7 +19,7 @@ const [fontsLoaded] = useFonts({
 })
   return (
     <NativeBaseProvider theme={THEME}>
-      {fontsLoaded ? <Register/> : <Loading/>}
+      {fontsLoaded ? <Routes/> : <Loading/>}
     </NativeBaseProvider>
   )
 }

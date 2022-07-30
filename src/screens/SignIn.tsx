@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { VStack, Heading, Text, HStack, Icon, useTheme, KeyboardAvoidingView, ScrollView as Container } from 'native-base'
 import { Envelope, Eye, EyeClosed, Key } from 'phosphor-react-native';
 import { Platform } from 'react-native';
@@ -7,7 +8,16 @@ import { Button, TextButton } from '../components/Button';
 import { Input } from '../components/Input';
 
 export default function SignIn() {
+  const { navigate } = useNavigation()
   const { colors } = useTheme()
+
+  const handleLogin = () => {
+
+  }
+  const handleSignUp = () => {
+    navigate('SignUp')
+  }
+
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -37,7 +47,7 @@ export default function SignIn() {
             mb={6}
           />
 
-          <Button title='Entrar' mb={4} />
+          <Button title='Entrar' mb={4} onPress={handleLogin}/>
 
           <HStack 
             w='full' 
@@ -45,7 +55,7 @@ export default function SignIn() {
             alignItems='center'
           >
             <Text color='gray.100' fontSize='sm'>Precisa de uma nova conta?</Text>
-            <TextButton title='Criar uma Conta'/>
+            <TextButton title='Criar uma Conta' onPress={handleSignUp} />
           </HStack>
 
         </VStack>

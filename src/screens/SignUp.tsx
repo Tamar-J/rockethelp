@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { VStack, Heading, Text, HStack, Icon, useTheme, KeyboardAvoidingView, ScrollView as Container } from 'native-base'
 import { Envelope, Key } from 'phosphor-react-native';
 import { Platform } from 'react-native';
@@ -8,6 +9,12 @@ import { Input } from '../components/Input';
 
 export default function SignUp() {
   const { colors } = useTheme()
+  const { goBack } = useNavigation()
+
+  const handleSignIn = () => {
+    goBack()
+  }
+
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -50,7 +57,7 @@ export default function SignUp() {
             mb={4}
           >
             <Text color='gray.100' fontSize='sm'>Já tem uma conta?</Text>
-            <TextButton title='Fazer Login'/>
+            <TextButton title='Fazer Login' onPress={handleSignIn} />
           </HStack>
 
         </VStack>
