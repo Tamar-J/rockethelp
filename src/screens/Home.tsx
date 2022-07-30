@@ -1,4 +1,5 @@
-import { VStack, FlatList, HStack, IconButton, useTheme, Heading, Text, Center, Box, Circle, Button } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { VStack, FlatList, HStack, IconButton, useTheme, Heading, Text, Center, Box, Circle, Button, Pressable } from 'native-base';
 import { SignOut, ChatTeardropText, Hourglass, ClockAfternoon } from 'phosphor-react-native';
 
 import Logo from '../assets/logo_secondary.svg' 
@@ -7,14 +8,19 @@ import { Button as CustomButton } from '../components/Button';
 
 export function Home() {
   const { colors } = useTheme()
+  const { navigate } = useNavigation()
 
   const data = [
-/*     {
+    {
       id: '1',
       patrimony: '147456',
       when: '20/01/22 às 14h'
-    } */
+    }
   ]
+
+  const handleNewOrder = () => {
+    navigate('Register')
+  }
 
   return (
     <VStack flex={1} bg={'gray.700'}>
@@ -58,25 +64,27 @@ export function Home() {
             )
           }}
           renderItem={({ item }) => (
-            <HStack mb={4} bg='gray.600' rounded='sm'>
-              <Box h='full' w={2} borderLeftRadius='sm' bg='secondary.700'/>
-              <HStack flex={1} alignItems='center' justifyContent='space-between'>
-                <VStack ml={5} my={5} mr={2} flex={1}>
-                  <Text fontSize='md' fontFamily='heading' color='gray.100' mb={1}>
-                    Patrimônio {item.patrimony}
-                  </Text>
-                  <HStack alignItems='center'>
-                    <ClockAfternoon size={18} color={colors.gray[300]} />
-                    <Text ml={1} fontSize='xs' color='gray.200'>
-                      {item.when}
+            <Pressable onPress={() => navigate('Details')} mb={4}>
+              <HStack bg='gray.600' rounded='sm'>
+                <Box h='full' w={2} borderLeftRadius='sm' bg='secondary.700'/>
+                <HStack flex={1} alignItems='center' justifyContent='space-between'>
+                  <VStack ml={5} my={5} mr={2} flex={1}>
+                    <Text fontSize='md' fontFamily='heading' color='gray.100' mb={1}>
+                      Patrimônio {item.patrimony}
                     </Text>
-                  </HStack>
-                </VStack>
-                <Circle h={12} w={12} bg='gray.500' mr={5}>
-                  <Hourglass size={24} color={colors.secondary[700]}/>
-                </Circle>
+                    <HStack alignItems='center'>
+                      <ClockAfternoon size={18} color={colors.gray[300]} />
+                      <Text ml={1} fontSize='xs' color='gray.200'>
+                        {item.when}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                  <Circle h={12} w={12} bg='gray.500' mr={5}>
+                    <Hourglass size={24} color={colors.secondary[700]}/>
+                  </Circle>
+                </HStack>
               </HStack>
-            </HStack>
+            </Pressable>
           )}
           _contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
@@ -88,7 +96,7 @@ export function Home() {
           )}
         />
 
-        <CustomButton title='Nova solicitação'  />
+        <CustomButton title='Nova solicitação' onPress={handleNewOrder}/>
       </VStack>
     </VStack>
   );

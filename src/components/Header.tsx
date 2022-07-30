@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { Heading, HStack, IconButton, Text, useTheme, VStack } from 'native-base';
 import { CaretLeft, IconProps } from 'phosphor-react-native';
 
@@ -8,6 +9,7 @@ type HeaderProps = {
 
 export function Header({ title, icon: Icon }:HeaderProps) {
   const { colors } = useTheme()
+  const { goBack } = useNavigation()
 
   return (
     <VStack bg='gray.600'>
@@ -17,6 +19,7 @@ export function Header({ title, icon: Icon }:HeaderProps) {
           position='absolute'
           left={0}
           ml={4}
+          onPress={() => goBack()}
         />
         <Heading color='gray.100' size='md'>Solicitação</Heading>
       </HStack>
