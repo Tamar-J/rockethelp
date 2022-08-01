@@ -7,6 +7,7 @@ import Logo from '../assets/logo_secondary.svg'
 import { Button } from '../components/Button';
 import { Filter } from '../components/Filter';
 import { Order } from '../components/Order';
+import { OrderDetails } from './Details';
 
 
 export function Home() {
@@ -55,8 +56,8 @@ export function Home() {
     navigate('Register')
   }
 
-  const handleOpenDetails = () => {
-    navigate('Details')
+  const handleOpenDetails = (orderObj: OrderDetails) => {
+    navigate('Details', { orderObj })
   }
 
   return (
@@ -74,7 +75,7 @@ export function Home() {
           icon={<SignOut size={26} color={colors.gray[300]}/>}
         />
       </HStack>
-      <VStack flex={1} px={6} pb={6} >
+      <VStack flex={1} px={5} pb={6} >
         <FlatList
           data={filteredData}
           keyExtractor={item => item.id}
@@ -105,7 +106,7 @@ export function Home() {
               </HStack>
             </>          
           )}
-          renderItem={({ item }) => <Order data={item}  onPress={handleOpenDetails} />}
+          renderItem={({ item }) => <Order data={item}  onPress={() => handleOpenDetails(item)} />}
           _contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (

@@ -11,6 +11,8 @@ export function Header({ title, icon: Icon }:HeaderProps) {
   const { colors } = useTheme()
   const { goBack } = useNavigation()
 
+  const statusColor = title === 'FINALIZADO' ? colors.green[300] : colors.secondary[700]
+
   return (
     <VStack bg='gray.600'>
       <HStack  mt={20} justifyContent='center' alignItems='center' mb={6}>
@@ -33,8 +35,8 @@ export function Header({ title, icon: Icon }:HeaderProps) {
             py={4}
             rounded={5}
           >
-            <Icon color={colors.green[300]}/>
-            <Text color='green.300' fontSize='sm' fontFamily='heading' ml={4}>
+            <Icon color={statusColor}/>
+            <Text color={statusColor} fontSize='sm' fontFamily='heading' ml={4}>
               {title}
             </Text>
           </HStack>

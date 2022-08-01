@@ -1,3 +1,5 @@
+import { RouteParams } from "../screens/Details"
+
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -5,7 +7,7 @@ export declare global {
       SignUp: undefined
       Home: undefined
       Register: undefined
-      Details: undefined
+      Details: RouteParams
     }
   }
 }
