@@ -1,7 +1,9 @@
+import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { VStack, FlatList, HStack, IconButton, useTheme, Heading, Text, Center } from 'native-base';
 import { SignOut, ChatTeardropText } from 'phosphor-react-native';
 import { useState } from 'react';
+import { Alert } from 'react-native';
 
 import Logo from '../assets/logo_secondary.svg' 
 import { Button } from '../components/Button';
@@ -52,6 +54,12 @@ export function Home() {
     : e.status === 'closed'
   ))
 
+  const handleSignOut = () => {
+    auth()
+      .signOut()
+      .catch(error => Alert.alert('Sair', 'Não foi possível deslogar.'))
+  }
+
   const handleNewOrder = () => {
     navigate('Register')
   }
@@ -73,6 +81,7 @@ export function Home() {
         <Logo />
         <IconButton 
           icon={<SignOut size={26} color={colors.gray[300]}/>}
+          onPress={handleSignOut}
         />
       </HStack>
       <VStack flex={1} px={5} pb={6} >
