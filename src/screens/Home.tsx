@@ -33,8 +33,8 @@ export function Home() {
     navigate('Register')
   }
 
-  const handleOpenDetails = (orderObj: OrderDetails) => {
-    navigate('Details', { orderObj })
+  const handleOpenDetails = (orderId: string) => {
+    navigate('Details', { orderId })
   }
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export function Home() {
             </>          
           )}
           renderItem={({ item }) => (
-            isLoading ? <Loading /> : <Order data={item} onPress={() => handleOpenDetails(item)} />
+            isLoading ? <Loading /> : <Order data={item} onPress={() => handleOpenDetails(item.id)} />
           )}
           _contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}

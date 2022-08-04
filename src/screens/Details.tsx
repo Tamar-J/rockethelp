@@ -1,30 +1,62 @@
+import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import { VStack, ScrollView } from 'native-base';
 import { CircleWavyCheck, ClipboardText, DesktopTower, Hourglass } from 'phosphor-react-native';
+import { useEffect, useState } from 'react';
 
 import { Button } from '../components/Button';
 import { CardDetails } from '../components/CardDetails';
 import { Header } from '../components/Header';
 import { Input } from '../components/Input';
+import { Loading } from '../components/Loading';
 import { OrderProps } from '../components/Order';
+import { OrderFirestoreDTO } from '../ODTs/OrderFirestoreDTO';
+import { dateFormat } from '../utils/firestoreDateFormat';
 
 export type OrderDetails = OrderProps & {
   closed_at: string
   solution: string
 }
-
 export type RouteParams = {
-  orderObj: OrderDetails
+  orderId: string
 }
+
 export function Details() {
   const route = useRoute()
-  const { orderObj } = route.params as RouteParams
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [order, setOrder] = useState<OrderDetails>({} as OrderDetails)
+
+  const { orderId } = route.params as RouteParams
+  const orderDocument = firestore().collection<OrderFirestoreDTO>('orders').doc(orderId)
+
+  useEffect(() => {
+    orderDocument
+      .get()
+      .then(doc => {
+        const { patrimony, description, status, created_at, closed_at, solution } = doc.data()
+
+        setOrder({
+          id: doc.id,
+          created_at: dateFormat(created_at),
+          patrimony,
+          description,
+          status,
+          solution,
+          closed_at: dateFormat(closed_at) || ''
+        })
+
+        setIsLoading(false)
+      })
+  }, [])
+
+  if (isLoading) return <Loading/>
 
   return (
     <VStack flex={1} bg='gray.700'>
       <Header 
-        title={ orderObj.status === 'closed'  ? 'FINALIZADO' : 'EM ANDAMENTO'}
-        icon={ orderObj.status === 'closed'  ? CircleWavyCheck : Hourglass}
+        title={ order.status === 'closed'  ? 'FINALIZADO' : 'EM ANDAMENTO'}
+        icon={ order.status === 'closed'  ? CircleWavyCheck : Hourglass}
       />
 
       <ScrollView 
@@ -34,26 +66,26 @@ export function Details() {
       >
         <CardDetails 
           title='EQUIPAMENTO'
-          description={`Patrimônio ${orderObj.patrimony}`}
+          description={`Patrimônio ${order.patrimony}`}
           icon={DesktopTower}
         />
 
         <CardDetails 
           title='DESCRIÇÃO DO PROBLEMA'
-          description={orderObj.description}
+          description={order.description}
           icon={ClipboardText}
-          footer={`Registrado em ${orderObj.created_at}`}
+          footer={`Registrado em ${order.created_at}`}
 
         />
          
         <CardDetails 
           title='SOLUÇÃO'
-          description={orderObj.status === 'closed' && orderObj.solution}
+          description={order.status === 'closed' && order.solution}
           icon={CircleWavyCheck}
-          footer={orderObj.status === 'closed' && `Finalizado em ${orderObj.closed_at}`}
+          footer={order.status === 'closed' && `Finalizado em ${order.closed_at}`}
         >
           {
-            orderObj.status === 'open' &&
+            order.status === 'open' &&
             <Input 
               placeholder='Descreva a solução do problema'
               multiline
@@ -69,7 +101,7 @@ export function Details() {
         
       </ScrollView>
       {
-        orderObj.status === 'open' && 
+        order.status === 'open' && 
         <VStack p={5}>
           <Button title='Finalizar' onPress={() => {}}/>
         </VStack >
