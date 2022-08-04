@@ -1,14 +1,17 @@
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { VStack, FlatList, HStack, IconButton, useTheme, Heading, Text, Center } from 'native-base';
 import { SignOut, ChatTeardropText } from 'phosphor-react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 import Logo from '../assets/logo_secondary.svg' 
 import { Button } from '../components/Button';
 import { Filter } from '../components/Filter';
-import { Order } from '../components/Order';
+import { Loading } from '../components/Loading';
+import { Order, OrderProps } from '../components/Order';
+import { dateFormat } from '../utils/firestoreDateFormat';
 import { OrderDetails } from './Details';
 
 
@@ -17,42 +20,8 @@ export function Home() {
   const { navigate } = useNavigation()
 
   const [typeSelected, setTypeSelected] = useState('open')
-
-  const data = [
-    {
-      id: '1',
-      created_at: '20/01/22 às 14h',
-      patrimony: '147456',
-      description: 'Problema de Junta',
-      solution: 'Jogamos tudo fora',
-      closed_at: '21/01/22 às 15h',
-      status: 'closed'
-    }, 
-    {
-      id: '2',
-      created_at: '20/01/22 às 15h',
-      patrimony: '147457',
-      description: 'Teste',
-      solution: '',
-      closed_at: '',
-      status: 'open'
-    },
-    {
-      id: '3',
-      created_at: '21/01/22 às 15h',
-      patrimony: '147457',
-      description: 'Teste2',
-      solution: '',
-      closed_at: '',
-      status: 'open'
-    }
-  ]
-
-  const filteredData = data.filter(e => (
-    typeSelected === 'open' 
-    ? e.status === 'open' 
-    : e.status === 'closed'
-  ))
+  const [isLoading, setIsLoading] = useState(false)
+  const [orders, setOrders] = useState<OrderProps[]>([])
 
   const handleSignOut = () => {
     auth()
@@ -67,6 +36,30 @@ export function Home() {
   const handleOpenDetails = (orderObj: OrderDetails) => {
     navigate('Details', { orderObj })
   }
+
+  useEffect(() => {
+    setIsLoading(true)
+    const subscriber = firestore()
+      .collection('orders')
+      .where('status', '==', typeSelected)
+      .onSnapshot(snapshot => {
+        const data = snapshot.docs.map(doc => {
+          const { created_at, patrimony, description, status } = doc.data()
+
+          return {
+            id: doc.id,
+            created_at: dateFormat(created_at),
+            patrimony, 
+            description, 
+            status 
+          }
+        })
+
+        setOrders(data)
+        setIsLoading(false)
+      })
+      return subscriber
+  }, [typeSelected])
 
   return (
     <VStack flex={1} bg={'gray.700'}>
@@ -86,7 +79,7 @@ export function Home() {
       </HStack>
       <VStack flex={1} px={5} pb={6} >
         <FlatList
-          data={filteredData}
+          data={orders}
           keyExtractor={item => item.id}
           ListHeaderComponent={() => (
             <>
@@ -95,7 +88,7 @@ export function Home() {
                   Solicitações
                 </Heading>
                 <Text color='gray.200' fontSize='md'>
-                  {filteredData.length}
+                  {isLoading ? "" : orders.length}
                 </Text>
               </HStack>
               <HStack alignItems='center' justifyContent='space-between' space={3} pb={8}>
@@ -115,17 +108,20 @@ export function Home() {
               </HStack>
             </>          
           )}
-          renderItem={({ item }) => <Order data={item}  onPress={() => handleOpenDetails(item)} />}
+          renderItem={({ item }) => (
+            isLoading ? <Loading /> : <Order data={item} onPress={() => handleOpenDetails(item)} />
+          )}
           _contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
-            <Center>
-              <ChatTeardropText color={colors.gray[400]} size={50} weight='light' />
-              <Text color='gray.300' fontSize='lg' mt={6} textAlign='center'>
-                Você ainda não tem{'\n'}
-                solicitações {typeSelected === 'open' ? 'em andamento' : 'finalizadas'}
-              </Text>
-            </Center>
+            isLoading ? <Loading /> :
+              <Center>
+                <ChatTeardropText color={colors.gray[400]} size={50} weight='light' />
+                <Text color='gray.300' fontSize='lg' mt={6} textAlign='center'>
+                  Você ainda não tem{'\n'}
+                  solicitações {typeSelected === 'open' ? 'em andamento' : 'finalizadas'}
+                </Text>
+              </Center>
           )}
         />
 
