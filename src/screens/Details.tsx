@@ -1,8 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { VStack, ScrollView } from 'native-base';
 import { CircleWavyCheck, ClipboardText, DesktopTower, Hourglass } from 'phosphor-react-native';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { Button } from '../components/Button';
 import { CardDetails } from '../components/CardDetails';
@@ -22,13 +23,36 @@ export type RouteParams = {
 }
 
 export function Details() {
-  const route = useRoute()
-
   const [isLoading, setIsLoading] = useState(true)
   const [order, setOrder] = useState<OrderDetails>({} as OrderDetails)
+  const [solution, setSolution] = useState('')
+  
+  const route = useRoute()
+  const { goBack } = useNavigation()
 
   const { orderId } = route.params as RouteParams
   const orderDocument = firestore().collection<OrderFirestoreDTO>('orders').doc(orderId)
+
+  const handleCloseOrder = () => {
+    if(solution === ''){
+      return Alert.alert('Solicitação', 'Informe a solução para encerrar a solicitação.')
+    }
+    
+    orderDocument
+      .update({
+        status: 'closed',
+        solution,
+        closed_at: firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        Alert.alert('Solicitação', 'Solicitação encerrada com sucesso.')
+        goBack()
+      })
+      .catch(error => {
+        console.log(error)
+        Alert.alert('Solicitação', 'Não foi possível encerrar a solicitação.')
+      })
+  }
 
   useEffect(() => {
     orderDocument
@@ -88,6 +112,8 @@ export function Details() {
             order.status === 'open' &&
             <Input 
               placeholder='Descreva a solução do problema'
+              value={solution}
+              onChangeText={setSolution}
               multiline
               autoCapitalize='sentences'
               textAlignVertical='top'
@@ -103,7 +129,7 @@ export function Details() {
       {
         order.status === 'open' && 
         <VStack p={5}>
-          <Button title='Finalizar' onPress={() => {}}/>
+          <Button title='Finalizar' onPress={handleCloseOrder}/>
         </VStack >
       }
     </VStack>
