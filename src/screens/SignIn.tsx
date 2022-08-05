@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
-import { VStack, Heading, Text, HStack, Icon, useTheme, KeyboardAvoidingView, ScrollView as Container } from 'native-base'
-import { Envelope, Eye, EyeClosed, Key } from 'phosphor-react-native';
+import { VStack, Heading, Text, HStack, Icon, useTheme, KeyboardAvoidingView, ScrollView as Container, IconButton } from 'native-base'
+import { Envelope, Eye, EyeSlash, Key } from 'phosphor-react-native';
 import { useState } from 'react';
 import { Alert, Platform } from 'react-native';
 
@@ -13,6 +13,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true)
 
   const { navigate } = useNavigation()
   const { colors } = useTheme()
@@ -73,12 +74,20 @@ export default function SignIn() {
           <Input 
             InputLeftElement={<Icon as={<Key color={colors.gray[300]}/>} ml={4} />}
             InputRightElement={
-              <Icon as={<Eye color={colors.gray[300]}/> } mr={4} />
+              <IconButton 
+                icon={
+                  isPasswordHidden 
+                  ? <Eye size={25} color={colors.gray[300]}/> 
+                  : <EyeSlash size={25} color={colors.gray[300]}/>
+                } 
+                onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+                mr={2} 
+              />
             }
             placeholder='Senha'
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={isPasswordHidden}
             mb={6}
           />
 
