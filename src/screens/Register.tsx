@@ -56,7 +56,6 @@ export function Register() {
         goBack()
       })
       .catch(error => {
-        console.log(error)
         setIsLoading(false)
         Alert.alert('Solicitação', 'Não foi possível registrada sua solicitação.')
       })

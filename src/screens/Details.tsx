@@ -49,7 +49,6 @@ export function Details() {
         goBack()
       })
       .catch(error => {
-        console.log(error)
         Alert.alert('Solicitação', 'Não foi possível encerrar a solicitação.')
       })
   }

@@ -34,12 +34,10 @@ export default function SignUp() {
     
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(response => console.log(response))
       .catch(error => {
         if (error.code === 'auth/invalid-email') {
           Alert.alert('Criar Conta', 'E-mail inválido.')
         }
-        console.log(error)
         setIsLoading(false)
       })
   }

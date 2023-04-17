@@ -25,9 +25,7 @@ export default function SignIn() {
     setIsLoading(true)
     auth()
       .signInWithEmailAndPassword(email, password)
-      //.then(response => console.log(response))
       .catch(error => {
-        console.log(error)
         setIsLoading(false)
 
         if (error.code === 'auth/invalid-email') {

@@ -13,11 +13,10 @@
       "package": "com.rockethelp",
       "googleServicesFile": "./google-services.json"
     },
-    "expo": {
-      "ios": {
-        "bundleIdentifier": "com.rockethelp",
-        "googleServicesFile": "./GoogleService-Info.plist"
-      }
+    "ios": {
+      "bundleIdentifier": "com.rockethelp",
+      "googleServicesFile": "./GoogleService-Info.plist"
     }
+    
   }
 }
